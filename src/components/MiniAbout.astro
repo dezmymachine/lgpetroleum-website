@@ -1,0 +1,113 @@
+---
+/**
+ * MiniAbout: black two-column intro.
+ * Left: bold large tagline. Right: business description + hr + office/button row.
+ */
+---
+
+<section class="about" id="about" aria-labelledby="about-heading">
+  <div class="container about__grid">
+    <div class="about__left">
+      <p class="eyebrow reveal">01 / About</p>
+      <h2 class="about__tagline reveal" id="about-heading" style="--reveal-delay: 0.08s">
+        A focused operator powering the next decade of energy trade.
+      </h2>
+    </div>
+
+    <div class="about__right">
+      <p class="about__lead reveal" style="--reveal-delay: 0.1s">
+        We handle clean petroleum products, liquid bulk cargoes and lube oils
+        across Ghana, the West African coast and worldwide, with a focus on
+        safe operations, efficient voyage performance and the highest
+        international standards.
+      </p>
+      <p class="about__meta reveal" style="--reveal-delay: 0.18s">
+        Independent operator serving bulk buyers, resellers and industrial
+        clients. One accountable partner from sourcing and storage to
+        last-mile delivery.
+      </p>
+
+      <hr class="about__rule reveal" style="--reveal-delay: 0.22s" />
+
+      <div class="about__foot reveal" style="--reveal-delay: 0.26s">
+        <p class="about__office">Head Office · Accra</p>
+        <a href="#contact" class="btn-gold about__btn">Full Story</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    background: var(--bg);
+    padding: clamp(4.5rem, 10vw, 8.5rem) 0;
+  }
+
+  .about__grid {
+    display: grid;
+    gap: 2.75rem;
+  }
+
+  .about__left .eyebrow {
+    display: block;
+    margin-bottom: 1.4rem;
+  }
+
+  .about__tagline {
+    font-size: clamp(2.1rem, 5.4vw, 4rem);
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .about__lead {
+    font-size: clamp(1.12rem, 2.2vw, 1.45rem);
+    font-weight: 300;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .about__meta {
+    margin-top: 1.4rem;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: var(--faint);
+    max-width: 56ch;
+  }
+
+  .about__rule {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 2.2rem 0 1.6rem;
+  }
+
+  .about__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .about__office {
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  @media (min-width: 900px) {
+    .about__grid {
+      grid-template-columns: 1fr 1.15fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
+    }
+
+    .about__left {
+      position: sticky;
+      top: calc(var(--nav-h) + 2rem);
+    }
+  }
+</style>

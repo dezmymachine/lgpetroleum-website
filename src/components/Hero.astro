@@ -1,0 +1,166 @@
+---
+/**
+ * Hero: full-viewport autoplay video background with transparent nav overlay.
+ * Drop the final footage at `public/videos/hero.mp4` (and optional
+ * `public/videos/hero.webm`). Until then a graded photographic fallback
+ * keeps the hero premium and LCP-friendly.
+ *
+ * Copy note: h1 is the brand; sub-copy targets "petroleum logistics Ghana".
+ */
+---
+
+<section class="hero" id="home" aria-label="Liberty Global Petroleum introduction">
+  <div class="hero__media" aria-hidden="true">
+    <!-- Fallback poster: replace with a real tanker still for LCP -->
+    <img
+      class="hero__poster"
+      src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=1920&q=60"
+      alt=""
+      fetchpriority="high"
+      decoding="async"
+    />
+    <video
+      class="hero__video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      disablepictureinpicture
+      aria-hidden="true"
+      tabindex="-1"
+      data-hero-video
+    >
+      <source src="/videos/hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero__shade"></div>
+  </div>
+
+  <div class="hero__content container">
+    <h1 class="hero__title reveal">
+      Liberty Global<br />Petroleum
+    </h1>
+    <p class="hero__sub reveal" style="--reveal-delay: 0.08s">
+      We move petroleum across Ghana and West Africa with safe storage and
+      transport you can count on. Reliable fuel supply for businesses that
+      never stop.
+    </p>
+    <!-- Mobile / stacked CTA: sits directly beneath the sub-copy -->
+    <a href="#about" class="btn-gold hero__cta hero__cta--inline reveal" style="--reveal-delay: 0.16s">
+      Learn More
+      <svg viewBox="0 0 22 12" fill="none" aria-hidden="true">
+        <path d="M0 6h20M15 1.5 19.5 6 15 10.5" stroke="currentColor" stroke-width="1.6" />
+      </svg>
+    </a>
+  </div>
+
+  <!-- Desktop CTA: pinned to the bottom-right of the hero -->
+  <a href="#about" class="btn-gold hero__cta hero__cta--corner">
+    Learn More
+    <svg viewBox="0 0 22 12" fill="none" aria-hidden="true">
+      <path d="M0 6h20M15 1.5 19.5 6 15 10.5" stroke="currentColor" stroke-width="1.6" />
+    </svg>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--bg-deep);
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .hero__poster,
+  .hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__poster {
+    object-position: center 60%;
+  }
+
+  .hero__video {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .hero__video.is-loaded {
+    opacity: 1;
+  }
+
+  /* Legibility grade: left-weighted for the title, dark floor for CTAs */
+  .hero__shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(8, 8, 8, 0.78) 0%, rgba(8, 8, 8, 0.45) 42%, rgba(8, 8, 8, 0.15) 70%, rgba(8, 8, 8, 0.25) 100%),
+      linear-gradient(0deg, rgba(8, 8, 8, 0.72) 0%, transparent 32%),
+      linear-gradient(180deg, rgba(8, 8, 8, 0.45) 0%, transparent 26%);
+  }
+
+  .hero__content {
+    padding-top: calc(var(--nav-h) + 2rem);
+    padding-bottom: 6rem;
+  }
+
+  .hero__title {
+    font-size: clamp(3rem, 9vw, 7.5rem);
+    font-weight: 300;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .hero__sub {
+    margin-top: 1.6rem;
+    max-width: 44ch;
+    font-size: clamp(0.98rem, 1.6vw, 1.12rem);
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .hero__cta--inline {
+    margin-top: 2rem;
+  }
+
+  .hero__cta--corner {
+    display: none;
+  }
+
+  @media (min-width: 860px) {
+    .hero__content {
+      padding-bottom: 4rem;
+    }
+
+    .hero__cta--inline {
+      display: none;
+    }
+
+    .hero__cta--corner {
+      display: inline-flex;
+      position: absolute;
+      right: clamp(2rem, 6vw, 5.5rem);
+      bottom: clamp(2.5rem, 7vh, 4.5rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__video {
+      display: none;
+    }
+  }
+</style>

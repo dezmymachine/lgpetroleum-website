@@ -1,0 +1,484 @@
+---
+/**
+ * QuoteModal: generic quote/contact form in a modal dialog.
+ * Fields: first name, last name, email, subject, message.
+ * Opened by any `[data-quote]` trigger (all quote CTAs site-wide).
+ * Optional `data-quote-subject="..."` on a trigger prefills the subject.
+ *
+ * No backend is wired yet: on submit the form validates, shows a success
+ * state, and opens a pre-addressed email as the delivery fallback.
+ * To use Formspree/Getform later, set `data-form-endpoint` on the <form>.
+ */
+---
+
+<div class="quote" data-quote-root hidden>
+  <div class="quote__backdrop" data-quote-backdrop></div>
+
+  <div
+    class="quote__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="quote-title"
+    data-quote-dialog
+  >
+    <button
+      class="quote__close"
+      type="button"
+      aria-label="Close quote form"
+      data-quote-close
+    >
+      <svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.5" />
+      </svg>
+    </button>
+
+    <div class="quote__body" data-quote-body>
+      <p class="eyebrow">/Contact</p>
+      <h2 class="quote__title" id="quote-title">
+        Get a quote, on the same <em>working day.</em>
+      </h2>
+      <p class="quote__sub">
+        Send us your volume, route and timeline. Our desk will come back
+        with rates and a firm offer.
+      </p>
+
+      <form class="quote__form" data-quote-form novalidate>
+        <div class="field-row">
+          <div class="field">
+            <label for="q-first">First name</label>
+            <input
+              id="q-first"
+              name="firstName"
+              type="text"
+              autocomplete="given-name"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="q-last">Last name</label>
+            <input
+              id="q-last"
+              name="lastName"
+              type="text"
+              autocomplete="family-name"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="q-email">Email <span aria-hidden="true">*</span></label>
+            <input
+              id="q-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="q-subject">Subject</label>
+            <input
+              id="q-subject"
+              name="subject"
+              type="text"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="q-message">Message <span aria-hidden="true">*</span></label>
+          <textarea
+            id="q-message"
+            name="message"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+
+        <p class="quote__error" data-quote-error role="alert" hidden></p>
+
+        <div class="quote__foot">
+          <p class="quote__note">
+            We respond within one working day<br />
+            info@lgpetroleum.africa
+          </p>
+          <button class="btn-gold" type="submit">
+            Send
+            <svg viewBox="0 0 22 12" fill="none" aria-hidden="true">
+              <path d="M0 6h20M15 1.5 19.5 6 15 10.5" stroke="currentColor" stroke-width="1.6" />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="quote__success" data-quote-success hidden>
+      <p class="eyebrow">/Contact</p>
+      <h2 class="quote__title">Request received.</h2>
+      <p class="quote__sub">
+        Thank you. Our desk will respond within one working day.
+        Your email app should have opened with the request addressed to
+        info@lgpetroleum.africa; if it didn&rsquo;t, just send your
+        details there directly.
+      </p>
+      <button class="btn-gold" type="button" data-quote-close>Done</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .quote {
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .quote[hidden] {
+    display: none;
+  }
+
+  .quote__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 5, 5, 0.72);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .quote.is-open .quote__backdrop {
+    opacity: 1;
+  }
+
+  .quote__dialog {
+    position: relative;
+    width: min(880px, 100%);
+    max-height: min(90dvh, 860px);
+    overflow-y: auto;
+    background: #0c0c0e;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 2px solid var(--gold);
+    border-radius: 6px;
+    padding: clamp(1.8rem, 5vw, 3.5rem);
+    opacity: 0;
+    transform: translateY(26px) scale(0.985);
+    transition: opacity 0.35s ease, transform 0.4s var(--ease-out);
+    scrollbar-width: thin;
+  }
+
+  .quote.is-open .quote__dialog {
+    opacity: 1;
+    transform: none;
+  }
+
+  .quote__close {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.1rem;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    color: var(--fg);
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .quote__close:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    transform: rotate(90deg);
+  }
+
+  .quote__close svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .quote .eyebrow {
+    display: block;
+    margin-bottom: 1.1rem;
+  }
+
+  .quote__title {
+    font-size: clamp(1.8rem, 4.6vw, 3rem);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    line-height: 1.12;
+    text-wrap: balance;
+    max-width: 20ch;
+  }
+
+  .quote__title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .quote__sub {
+    margin-top: 0.9rem;
+    color: var(--muted);
+    font-size: 0.98rem;
+    line-height: 1.65;
+    max-width: 56ch;
+  }
+
+  .quote__form {
+    margin-top: 2.2rem;
+  }
+
+  .field-row {
+    display: grid;
+    gap: 1.8rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.8rem;
+  }
+
+  .field label {
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin-bottom: 0.15rem;
+  }
+
+  .field label span {
+    color: var(--gold);
+  }
+
+  .field input,
+  .field textarea {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 0;
+    color: var(--fg);
+    font: inherit;
+    font-size: 1rem;
+    padding: 0.7rem 0;
+    width: 100%;
+    transition: border-color 0.25s ease;
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 84px;
+    line-height: 1.6;
+  }
+
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-bottom-color: var(--gold);
+  }
+
+  .field input:user-invalid,
+  .field textarea:user-invalid {
+    border-bottom-color: #e5484d;
+  }
+
+  .quote__error {
+    color: #ff8a8e;
+    font-size: 0.88rem;
+    margin: -0.6rem 0 1.2rem;
+  }
+
+  .quote__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.6rem;
+  }
+
+  .quote__note {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    line-height: 2;
+    color: var(--faint);
+  }
+
+  .quote__success {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    padding-block: 1rem;
+  }
+
+  .quote__success[hidden] {
+    display: none;
+  }
+
+  .quote__success .btn-gold {
+    margin-top: 1.6rem;
+  }
+
+  @media (min-width: 720px) {
+    .field-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .quote__backdrop,
+    .quote__dialog {
+      transition: none;
+    }
+
+    .quote__dialog {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.querySelector('[data-quote-root]');
+    if (!root) return;
+    const dialog = root.querySelector('[data-quote-dialog]');
+    const form = root.querySelector('[data-quote-form]');
+    const errorBox = root.querySelector('[data-quote-error]');
+    const bodyView = root.querySelector('[data-quote-body]');
+    const successView = root.querySelector('[data-quote-success]');
+    const subjectInput = root.querySelector('#q-subject');
+    let opener = null;
+
+    const focusables = () =>
+      [...dialog.querySelectorAll(
+        'button, input, textarea, a[href]',
+      )].filter((el) => !el.hidden && el.offsetParent !== null);
+
+    function open(trigger) {
+      opener = trigger || null;
+      const preset = trigger?.getAttribute?.('data-quote-subject');
+      if (preset && subjectInput && !subjectInput.value) {
+        subjectInput.value = preset;
+      }
+      // reset to form view each open
+      bodyView.hidden = false;
+      successView.hidden = true;
+      if (errorBox) {
+        errorBox.hidden = true;
+        errorBox.textContent = '';
+      }
+      root.hidden = false;
+      document.body.classList.add('modal-open');
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => root.classList.add('is-open')),
+      );
+      root.querySelector('#q-first')?.focus({ preventScroll: true });
+    }
+
+    function close() {
+      root.classList.remove('is-open');
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = '';
+      window.setTimeout(() => {
+        root.hidden = true;
+        form?.reset();
+        opener?.focus?.({ preventScroll: true });
+        opener = null;
+      }, 320);
+    }
+
+    // All quote CTAs site-wide
+    document.querySelectorAll('[data-quote]').forEach((trigger) => {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        // close mobile menu first if open
+        document.body.classList.remove('menu-open');
+        const backdrop = document.querySelector('[data-menu-backdrop]');
+        if (backdrop) backdrop.hidden = true;
+        document
+          .querySelector('[data-menu-toggle]')
+          ?.setAttribute('aria-expanded', 'false');
+        open(trigger);
+      });
+    });
+
+    root.querySelector('[data-quote-backdrop]')
+      ?.addEventListener('click', close);
+    root.querySelectorAll('[data-quote-close]').forEach((btn) =>
+      btn.addEventListener('click', close),
+    );
+    window.addEventListener('keydown', (e) => {
+      if (root.hidden) return;
+      if (e.key === 'Escape') close();
+      // lightweight focus trap
+      if (e.key === 'Tab') {
+        const items = focusables();
+        if (!items.length) return;
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const first = String(data.get('firstName') || '').trim();
+      const last = String(data.get('lastName') || '').trim();
+      const email = String(data.get('email') || '').trim();
+      const subject = String(data.get('subject') || '').trim();
+      const message = String(data.get('message') || '').trim();
+
+      const fail = (msg) => {
+        errorBox.textContent = msg;
+        errorBox.hidden = false;
+      };
+
+      if (!first || !last) return fail('Please add your first and last name.');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return fail('Please enter a valid email address.');
+      }
+      if (!message) return fail('Please add a short message.');
+      errorBox.hidden = true;
+
+      // Delivery fallback until a form endpoint is wired:
+      // open a pre-addressed email with the request details.
+      const lines = [
+        `Name: ${first} ${last}`,
+        `Email: ${email}`,
+        subject ? `Subject: ${subject}` : null,
+        '',
+        message,
+      ].filter((l) => l !== null);
+      const href =
+        'mailto:info@lgpetroleum.africa' +
+        `?subject=${encodeURIComponent(
+          `[Quote] ${subject || 'New request'} | ${first} ${last}`,
+        )}` +
+        `&body=${encodeURIComponent(lines.join('\n'))}`;
+      window.location.href = href;
+
+      bodyView.hidden = true;
+      successView.hidden = false;
+      successView.querySelector('button')?.focus();
+    });
+  })();
+</script>

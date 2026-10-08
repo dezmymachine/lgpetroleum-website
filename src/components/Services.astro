@@ -1,0 +1,206 @@
+---
+/**
+ * Services: what Liberty Global Petroleum sells, in SEO-friendly semantic markup.
+ * Numbered cards, gold accents, staggered scroll-reveal, each card converts to #contact.
+ */
+const services = [
+  {
+    n: '01',
+    title: 'Petroleum Sourcing & Supply',
+    desc: 'Reliable procurement of clean petroleum products and lube oils, delivered on schedule and to specification for bulk buyers and resellers.',
+  },
+  {
+    n: '02',
+    title: 'Bulk Storage',
+    desc: 'Safe, compliant tank storage that protects product quality and keeps buffer stock ready for your demand peaks.',
+  },
+  {
+    n: '03',
+    title: 'Haulage & Distribution',
+    desc: 'Efficient road transport from depot to site across Ghana and the sub-region, with tracking and on-time delivery.',
+  },
+  {
+    n: '04',
+    title: 'Bunkering & Marine Supply',
+    desc: 'Dependable marine fuel supply for vessels calling along the West African coast, handled to international standards.',
+  },
+];
+---
+
+<section class="services" id="services" aria-labelledby="services-heading">
+  <div class="container">
+    <div class="services__head">
+      <div>
+        <p class="eyebrow reveal">02 / Services</p>
+        <h2 class="services__title reveal" id="services-heading" style="--reveal-delay: 0.08s">
+          Complete fuel logistics, under one roof.
+        </h2>
+      </div>
+      <p class="services__blurb reveal" style="--reveal-delay: 0.14s">
+        One accountable partner from sourcing and storage to last-mile
+        delivery, so your operations never run dry.
+      </p>
+    </div>
+
+    <ul class="services__grid">
+      {services.map((s, i) => (
+        <li
+          class="service-card reveal"
+          style={`--reveal-delay: ${0.08 + i * 0.07}s`}
+        >
+          <span class="service-card__num" aria-hidden="true">{s.n}</span>
+          <h3 class="service-card__title">{s.title}</h3>
+          <p class="service-card__desc">{s.desc}</p>
+          <a class="service-card__link" href="#contact" data-quote data-quote-subject={s.title} aria-label={`${s.title}, get a quote`}>
+            Get a quote
+            <svg viewBox="0 0 22 12" fill="none" aria-hidden="true">
+              <path d="M0 6h20M15 1.5 19.5 6 15 10.5" stroke="currentColor" stroke-width="1.6" />
+            </svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .services {
+    background: var(--bg);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: clamp(4.5rem, 10vw, 8.5rem) 0;
+  }
+
+  .services__head {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .services__head .eyebrow {
+    display: block;
+    margin-bottom: 1.2rem;
+  }
+
+  .services__title {
+    font-size: clamp(1.9rem, 4.6vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  .services__blurb {
+    color: var(--muted);
+    font-size: 1.02rem;
+    line-height: 1.7;
+    max-width: 44ch;
+    align-self: end;
+  }
+
+  .services__grid {
+    list-style: none;
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .service-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 18px;
+    padding: 2rem 1.8rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    overflow: hidden;
+    transition: transform 0.3s var(--ease-out), border-color 0.3s ease,
+      background 0.3s ease;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .service-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(239, 191, 4, 0.45);
+    background: rgba(255, 255, 255, 0.045);
+  }
+
+  .service-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .service-card__num {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    color: var(--gold);
+  }
+
+  .service-card__title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+
+  .service-card__desc {
+    color: var(--muted);
+    font-size: 0.96rem;
+    line-height: 1.7;
+    flex: 1;
+  }
+
+  .service-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--fg);
+    transition: color 0.2s ease, gap 0.25s var(--ease-out);
+  }
+
+  .service-card__link svg {
+    width: 20px;
+    height: 11px;
+  }
+
+  .service-card__link:hover {
+    color: var(--gold);
+    gap: 0.9rem;
+  }
+
+  @media (min-width: 640px) {
+    .services__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .services__head {
+      grid-template-columns: 1.3fr 1fr;
+      align-items: end;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .services__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>
