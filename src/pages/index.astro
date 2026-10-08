@@ -88,13 +88,24 @@ const description =
       /* Fade the hero video in only when it can actually play */
       const video = document.querySelector('[data-hero-video]');
       if (video) {
+        // Mobile Safari/Chrome only honor autoplay when the muted state
+        // is set as a JS property, not just the HTML attribute.
+        video.muted = true;
+        video.defaultMuted = true;
+        const tryPlay = () => video.play().catch(() => {});
         const show = () => video.classList.add('is-loaded');
         video.addEventListener('canplay', show, { once: true });
+        video.addEventListener('loadeddata', tryPlay);
         if (video.readyState >= 3) show();
+        tryPlay();
+        // First user gesture unlocks playback on restrictive mobile modes.
+        ['touchstart', 'click'].forEach((evt) =>
+          window.addEventListener(evt, tryPlay, { once: true, passive: true }),
+        );
         /* Pause off-screen to save battery / CPU */
         if ('IntersectionObserver' in window && !reduceMotion) {
           new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting) video.play().catch(() => {});
+            if (entry.isIntersecting) tryPlay();
             else video.pause();
           }).observe(video);
         }
