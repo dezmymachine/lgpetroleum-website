@@ -70,7 +70,11 @@ const navigate = [
 
   <div class="container site-footer__base">
     <p>© <span data-year>2026</span> Liberty Global Petroleum</p>
-    <a href="#home">Back to top</a>
+    <a href="#home" class="to-top" aria-label="Back to top">
+      <svg viewBox="0 0 12 14" fill="none" aria-hidden="true">
+        <path d="M6 13V1M1.5 5.5 6 1l4.5 4.5" stroke="currentColor" stroke-width="1.6" />
+      </svg>
+    </a>
   </div>
 </footer>
 
@@ -226,11 +230,32 @@ const navigate = [
   .site-footer__base a {
     color: inherit;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, border-color 0.25s ease,
+      transform 0.25s var(--ease-out);
   }
 
   .site-footer__base a:hover {
     color: var(--gold);
+  }
+
+  .to-top {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+  }
+
+  .to-top svg {
+    width: 13px;
+    height: 15px;
+  }
+
+  .to-top:hover {
+    border-color: var(--gold);
+    transform: translateY(-3px);
   }
 
   @media (min-width: 720px) {
