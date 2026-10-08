@@ -144,6 +144,16 @@
     display: none;
   }
 
+  @media (max-width: 859px) {
+    /* Mobile shows the static fallback image: darken uniformly so the
+       headline and sub-copy stay legible on any frame. */
+    .hero__shade {
+      background:
+        linear-gradient(180deg, rgba(8, 8, 8, 0.62) 0%, rgba(8, 8, 8, 0.42) 34%, rgba(8, 8, 8, 0.6) 68%, rgba(8, 8, 8, 0.85) 100%),
+        linear-gradient(90deg, rgba(8, 8, 8, 0.55) 0%, rgba(8, 8, 8, 0.3) 100%);
+    }
+  }
+
   @media (min-width: 860px) {
     .hero__content {
       padding-bottom: 4rem;
