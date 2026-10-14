@@ -1,0 +1,164 @@
+---
+/**
+ * SiteScripts: shared behaviour for every page. Runs under the View
+ * Transitions router (ClientRouter), so it is split in two:
+ *  - once per session: global listeners (scroll, menu, Escape), delegated
+ *  - on every `astro:page-load`: per-page setup (reveals, hero video,
+ *    scroll-spy, footer year), torn down on `astro:before-swap`.
+ */
+---
+
+<script>
+  const $ = (sel: string) => document.querySelector<HTMLElement>(sel);
+  const reduceMotion = () =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- once per session (delegated, survives page swaps) ---------- */
+
+  /* Transparent -> blurred nav after scrolling past the top */
+  const onScroll = () =>
+    $('[data-nav]')?.classList.toggle('is-scrolled', window.scrollY > 24);
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* Mobile menu: animated hamburger + panel slides in from right */
+  const setMenu = (open: boolean) => {
+    const toggle = $('[data-menu-toggle]');
+    const panel = $('[data-menu-panel]');
+    const backdrop = $('[data-menu-backdrop]');
+    document.body.classList.toggle('menu-open', open);
+    toggle?.setAttribute('aria-expanded', String(open));
+    toggle?.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (backdrop) backdrop.hidden = !open;
+    if (open) panel?.removeAttribute('inert');
+    else panel?.setAttribute('inert', '');
+  };
+
+  document.addEventListener('click', (e) => {
+    const t = e.target as Element;
+    if (t.closest('[data-menu-toggle]')) {
+      setMenu(!document.body.classList.contains('menu-open'));
+    } else if (t.closest('[data-menu-backdrop]')) {
+      setMenu(false);
+    } else if (t.closest('[data-menu-panel] a')) {
+      setMenu(false);
+    }
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      setMenu(false);
+      $('[data-menu-toggle]')?.focus();
+    }
+  });
+
+  /* ---------- per page (re-run after every navigation) ---------- */
+
+  let cleanup: Array<() => void> = [];
+  const teardown = () => {
+    cleanup.forEach((fn) => fn());
+    cleanup = [];
+  };
+
+  const initReveals = () => {
+    const els = document.querySelectorAll('.reveal');
+    if (reduceMotion() || !('IntersectionObserver' in window)) {
+      els.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          // Release the compositor layer once the reveal has played
+          entry.target.addEventListener(
+            'transitionend',
+            () => ((entry.target as HTMLElement).style.willChange = 'auto'),
+            { once: true },
+          );
+          io.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    );
+    els.forEach((el) => io.observe(el));
+    cleanup.push(() => io.disconnect());
+  };
+
+  const initHeroVideo = () => {
+    const video = $('[data-hero-video]') as HTMLVideoElement | null;
+    if (!video) return;
+    // Mobile Safari/Chrome only honor autoplay when the muted state
+    // is set as a JS property, not just the HTML attribute.
+    video.muted = true;
+    video.defaultMuted = true;
+    const tryPlay = () => video.play().catch(() => {});
+    const show = () => video.classList.add('is-loaded');
+    const ac = new AbortController();
+    const { signal } = ac;
+    video.addEventListener('canplay', show, { once: true, signal });
+    video.addEventListener('loadeddata', tryPlay, { signal });
+    if (video.readyState >= 3) show();
+    tryPlay();
+    // First user gesture unlocks playback on restrictive mobile modes.
+    ['touchstart', 'click'].forEach((evt) =>
+      window.addEventListener(evt, tryPlay, {
+        once: true,
+        passive: true,
+        signal,
+      }),
+    );
+    cleanup.push(() => ac.abort());
+    /* Pause off-screen to save battery / CPU */
+    if ('IntersectionObserver' in window && !reduceMotion()) {
+      const io = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) tryPlay();
+        else video.pause();
+      });
+      io.observe(video);
+      cleanup.push(() => io.disconnect());
+    }
+  };
+
+  /* Active nav link: scroll-spy on Home, fixed on About */
+  const initNavHighlight = () => {
+    const links = [...document.querySelectorAll<HTMLElement>('.nav__link')];
+    const setActive = (key: string) =>
+      links.forEach((l) =>
+        l.classList.toggle('is-active', l.dataset.spy === key),
+      );
+    if (document.body.dataset.page === 'about') {
+      setActive('about');
+      return;
+    }
+    setActive('home');
+    if (!('IntersectionObserver' in window) || !links.length) return;
+    const spy = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        }),
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    ['home', 'services', 'contact'].forEach((id) => {
+      const s = document.getElementById(id);
+      if (s) spy.observe(s);
+    });
+    cleanup.push(() => spy.disconnect());
+  };
+
+  const init = () => {
+    teardown();
+    setMenu(false);
+    onScroll();
+    initReveals();
+    initHeroVideo();
+    initNavHighlight();
+    document
+      .querySelectorAll('[data-year]')
+      .forEach((el) => (el.textContent = String(new Date().getFullYear())));
+  };
+
+  document.addEventListener('astro:before-swap', teardown);
+  document.addEventListener('astro:page-load', init);
+</script>

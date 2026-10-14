@@ -11,7 +11,7 @@
  */
 ---
 
-<div class="quote" data-quote-root hidden>
+<div class="quote" data-quote-root hidden transition:persist="quote-modal">
   <div class="quote__backdrop" data-quote-backdrop></div>
 
   <div
@@ -103,7 +103,9 @@
         <div class="quote__foot">
           <p class="quote__note">
             We respond within one working day<br />
-            info@lgpetroleum.africa
+            info@lgpetroleum.africa<br />
+            <a href="tel:+233245770319">+233 24 577 0319</a><br />
+            <a href="https://wa.me/233245770319" target="_blank" rel="noopener">WhatsApp</a>
           </p>
           <button class="btn-gold" type="submit">
             Send
@@ -122,7 +124,8 @@
         Thank you. Our desk will respond within one working day.
         Your email app should have opened with the request addressed to
         info@lgpetroleum.africa; if it didn&rsquo;t, just send your
-        details there directly.
+        details there directly, or call or WhatsApp us on
+        <a href="tel:+233245770319">+233 24 577 0319</a>.
       </p>
       <button class="btn-gold" type="button" data-quote-close>Done</button>
     </div>
@@ -215,7 +218,7 @@
   .quote__title {
     font-size: clamp(1.8rem, 4.6vw, 3rem);
     font-weight: 300;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.025rem;
     line-height: 1.12;
     text-wrap: balance;
     max-width: 20ch;
@@ -306,11 +309,21 @@
   }
 
   .quote__note {
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    line-height: 2;
+    font-size: 0.8rem;
+    line-height: 1.9;
     color: var(--faint);
+  }
+
+  .quote__note a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .quote__note a:hover {
+    color: var(--gold);
+    border-color: var(--gold);
   }
 
   .quote__success {
@@ -400,19 +413,24 @@
     }
 
     // All quote CTAs site-wide
-    document.querySelectorAll('[data-quote]').forEach((trigger) => {
-      trigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        // close mobile menu first if open
-        document.body.classList.remove('menu-open');
-        const backdrop = document.querySelector('[data-menu-backdrop]');
-        if (backdrop) backdrop.hidden = true;
-        document
-          .querySelector('[data-menu-toggle]')
-          ?.setAttribute('aria-expanded', 'false');
-        open(trigger);
-      });
-    });
+    // (delegated: triggers live in swapped page content and the persisted nav)
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('[data-quote]');
+      if (!trigger) return;
+      e.preventDefault();
+      // close mobile menu first if open
+      document.body.classList.remove('menu-open');
+      const backdrop = document.querySelector('[data-menu-backdrop]');
+      if (backdrop) backdrop.hidden = true;
+      document
+        .querySelector('[data-menu-panel]')
+        ?.setAttribute('inert', '');
+      document
+        .querySelector('[data-menu-toggle]')
+        ?.setAttribute('aria-expanded', 'false');
+      open(trigger);
+      // capture phase: must preventDefault before the router sees the click
+    }, true);
 
     root.querySelector('[data-quote-backdrop]')
       ?.addEventListener('click', close);

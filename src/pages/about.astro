@@ -1,0 +1,334 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import ContactFooter from '../components/ContactFooter.astro';
+import QuoteModal from '../components/QuoteModal.astro';
+import SiteScripts from '../components/SiteScripts.astro';
+
+const title = 'About Us | Liberty Global Petroleum';
+const description =
+  'Liberty Global Petroleum (LG Petroleum) is an oil and gas marketing and trading company connecting reputable petroleum suppliers with qualified buyers across Africa and international markets.';
+
+const services = [
+  {
+    title: 'Petroleum Product Sourcing',
+    desc: 'Identifying and coordinating reliable sources of petroleum products.',
+  },
+  {
+    title: 'Oil & Gas Marketing',
+    desc: 'Marketing petroleum products to qualified buyers and market participants.',
+  },
+  {
+    title: 'International Trading',
+    desc: 'Facilitating cross-border petroleum transactions through strategic partnerships.',
+  },
+  {
+    title: 'Supplier–Buyer Facilitation',
+    desc: 'Connecting credible suppliers with genuine and qualified buyers.',
+  },
+  {
+    title: 'Transaction Coordination',
+    desc: 'Supporting the commercial, contractual, financial, and operational processes required to execute transactions.',
+  },
+  {
+    title: 'Strategic Energy Partnerships',
+    desc: 'Building long-term relationships with suppliers, buyers, financial institutions, logistics providers, and other industry stakeholders.',
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical="https://lgpetroleum.africa/about"
+  page="about"
+>
+  <Navbar />
+  <main id="main">
+    <section class="about-page" aria-labelledby="about-title">
+      <div class="container">
+        <div class="about-page__head">
+          <div>
+            <p class="eyebrow reveal">/About</p>
+            <h1 class="about-page__title reveal" id="about-title" style="--reveal-delay: 0.08s">
+              Connecting reliable supply with genuine market demand.
+            </h1>
+          </div>
+
+          <figure class="about-page__figure reveal" style="--reveal-delay: 0.12s">
+            <img
+              src="/kofi_lg.png"
+              alt="Bernard Kofi Agboado, CEO of LG Petroleum"
+              width="400"
+              height="400"
+              loading="eager"
+            />
+            <figcaption>
+              <span class="about-page__name">Bernard Kofi Agboado</span>
+              <span class="about-page__role">CEO of LG Petroleum</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="about-page__grid">
+          <div class="about-page__col">
+            <p class="about-page__lead reveal">
+              <strong>Liberty Global Petroleum (LG Petroleum)</strong> is an
+              emerging oil and gas marketing and trading company focused on
+              creating reliable connections between reputable petroleum
+              product suppliers and qualified buyers across Africa and
+              international markets.
+            </p>
+            <p class="reveal">
+              The company operates with a strong commitment to
+              <strong>integrity, reliability, transparency, and long-term partnerships</strong>.
+              LG Petroleum works with strategic partners and industry
+              stakeholders to facilitate the sourcing, marketing, and supply
+              of petroleum products while ensuring that transactions are
+              structured professionally and executed in accordance with
+              agreed commercial terms.
+            </p>
+            <p class="reveal">
+              Our business model is built around identifying credible supply
+              opportunities, understanding market requirements, and
+              connecting suitable suppliers with genuine buyers. Through
+              strategic partnerships and a growing network within the energy
+              sector, LG Petroleum seeks to provide clients with access to
+              competitive and dependable petroleum supply solutions.
+            </p>
+
+            <h2 class="reveal">Our Approach</h2>
+            <p class="reveal">
+              At LG Petroleum, we recognize that successful energy trading
+              depends on more than simply connecting buyers and sellers. It
+              requires <strong>trust, due diligence, effective communication, financial coordination, and careful transaction management</strong>.
+            </p>
+            <p class="reveal">
+              We therefore work to ensure that each transaction is properly
+              coordinated from the initial engagement through to
+              documentation, financial instruments, logistics, and delivery
+              arrangements. Our approach is designed to minimize transaction
+              risks while creating value for all parties involved.
+            </p>
+          </div>
+
+          <div class="about-page__col">
+            <h2 class="about-page__first reveal">Our Vision</h2>
+            <p class="about-page__pull reveal">
+              To become a trusted and leading global energy trading and
+              petroleum marketing company, connecting reliable sources of
+              energy with markets across Africa and beyond.
+            </p>
+
+            <h2 class="reveal">Our Mission</h2>
+            <p class="about-page__pull reveal">
+              To provide reliable, transparent, and competitive access to
+              quality petroleum products by building trusted partnerships
+              with suppliers, buyers, and strategic industry stakeholders,
+              while creating sustainable value for our clients and partners.
+            </p>
+
+            <h2 class="reveal">Our Commitment</h2>
+            <p class="reveal">
+              LG Petroleum is committed to conducting business with
+              professionalism and integrity. We place strong emphasis on
+              <strong>transparency, proper due diligence, contractual compliance, and dependable business relationships</strong>.
+            </p>
+            <p class="reveal">
+              As the energy industry continues to evolve, LG Petroleum is
+              positioning itself to participate not only in conventional
+              petroleum markets but also in emerging opportunities across the
+              broader energy sector.
+            </p>
+            <p class="about-page__closing reveal">
+              Our goal is simple: <strong>to build a trusted energy business that creates sustainable value by connecting reliable supply with genuine market demand.</strong>
+            </p>
+          </div>
+        </div>
+
+        <div class="about-page__services-block">
+          <h2 class="reveal">Our Services</h2>
+          <p class="reveal">LG Petroleum&rsquo;s activities include:</p>
+          <ul class="about-page__services">
+            {services.map((s) => (
+              <li class="reveal">
+                <strong>{s.title}</strong> – {s.desc}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <ContactFooter />
+  <QuoteModal />
+  <SiteScripts />
+</BaseLayout>
+
+<style>
+  .about-page {
+    background: var(--bg);
+    padding: calc(var(--nav-h) + clamp(1.5rem, 4vw, 3rem)) 0
+      clamp(4.5rem, 10vw, 8rem);
+  }
+
+  .about-page .eyebrow {
+    display: block;
+    margin-bottom: 1.4rem;
+  }
+
+  .about-page__head {
+    display: grid;
+    gap: 2.5rem;
+    align-items: end;
+  }
+
+  .about-page__title {
+    max-width: 20ch;
+    font-size: clamp(1.9rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.025rem;
+    text-wrap: balance;
+  }
+
+  .about-page__figure {
+    width: min(460px, 100%);
+  }
+
+  .about-page__figure img {
+    width: 100%;
+    height: auto;
+  }
+
+  .about-page__figure figcaption {
+    display: grid;
+    gap: 0.25rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .about-page__name {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .about-page__role {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: -0.025rem;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .about-page__grid {
+    display: grid;
+    gap: 3rem;
+    margin-top: clamp(3rem, 7vw, 5.5rem);
+    padding-top: clamp(2.5rem, 5vw, 3.5rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .about-page__col p,
+  .about-page__services-block p,
+  .about-page__services li {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+
+  .about-page__col p + p {
+    margin-top: 1.25rem;
+  }
+
+  .about-page strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .about-page__col .about-page__lead {
+    font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .about-page h2 {
+    margin: clamp(2.5rem, 5vw, 3.5rem) 0 1rem;
+    font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+    font-weight: 700;
+    letter-spacing: -0.025rem;
+  }
+
+  .about-page h2::before {
+    content: '';
+    display: block;
+    width: 34px;
+    height: 2px;
+    margin-bottom: 0.9rem;
+    background: var(--gold);
+  }
+
+  .about-page__col .about-page__first {
+    margin-top: 0;
+  }
+
+  .about-page__col .about-page__pull {
+    font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--fg);
+  }
+
+  .about-page__col .about-page__closing {
+    margin-top: 2.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .about-page__services-block {
+    margin-top: clamp(3rem, 7vw, 5rem);
+  }
+
+  .about-page__services {
+    list-style: none;
+    margin-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .about-page__services li {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (min-width: 640px) {
+    .about-page__head {
+      grid-template-columns: 3fr 2fr;
+      align-items: center;
+      gap: clamp(2rem, 6vw, 6rem);
+    }
+
+    .about-page__figure {
+      justify-self: center;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .about-page__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 7vw, 7rem);
+      align-items: start;
+    }
+
+    .about-page__grid .about-page__col:first-child > :first-child {
+      margin-top: 0;
+    }
+
+    .about-page__services {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: clamp(3rem, 7vw, 7rem);
+    }
+  }
+</style>
