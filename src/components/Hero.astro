@@ -124,7 +124,7 @@
     font-size: clamp(3rem, 9vw, 7.5rem);
     font-weight: 300;
     line-height: 0.98;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025rem;
     text-wrap: balance;
   }
 
@@ -166,7 +166,8 @@
     .hero__cta--corner {
       display: inline-flex;
       position: absolute;
-      right: clamp(2rem, 6vw, 5.5rem);
+      /* align to the right edge of .container (same width formula) */
+      right: calc((100% - min(var(--container), 100% - 4rem)) / 2);
       bottom: clamp(2.5rem, 7vh, 4.5rem);
     }
   }

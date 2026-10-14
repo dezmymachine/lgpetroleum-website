@@ -6,9 +6,9 @@
  */
 ---
 
-<header class="nav" id="siteNav" data-nav>
+<header class="nav" id="siteNav" data-nav transition:persist="site-nav">
   <div class="nav__inner container">
-    <a href="#home" class="nav__brand" aria-label="Liberty Global Petroleum homepage">
+    <a href="/" class="nav__brand" aria-label="Liberty Global Petroleum homepage">
       <img
         src="/logo.png"
         alt="Liberty Global Petroleum logo"
@@ -19,11 +19,11 @@
     </a>
 
     <nav class="nav__links" aria-label="Primary">
-      <a href="#home" class="nav__link is-active">Home</a>
-      <a href="#about" class="nav__link">About</a>
-      <a href="#services" class="nav__link">Services</a>
-      <a href="#contact" class="nav__link">Contact</a>
-      <a href="#contact" class="btn-outline nav__quote" data-quote>Get a Quote</a>
+      <a href="/" class="nav__link" data-spy="home">Home</a>
+      <a href="/about" class="nav__link" data-spy="about">About</a>
+      <a href="/#services" class="nav__link" data-spy="services">Services</a>
+      <a href="/#contact" class="nav__link" data-spy="contact">Contact</a>
+      <a href="/#contact" class="btn-outline nav__quote" data-quote>Get a Quote</a>
     </nav>
 
     <button
@@ -41,7 +41,7 @@
   </div>
 </header>
 
-<div class="nav__backdrop" data-menu-backdrop hidden></div>
+<div class="nav__backdrop" data-menu-backdrop hidden transition:persist="nav-backdrop"></div>
 
 <aside
   class="nav__mobile"
@@ -49,14 +49,15 @@
   aria-label="Mobile navigation"
   data-menu-panel
   inert
+  transition:persist="nav-panel"
 >
   <nav class="nav__mobile-links">
-    <a href="#home" class="nav__mobile-link" style="--i: 0">Home</a>
-    <a href="#about" class="nav__mobile-link" style="--i: 1">About</a>
-    <a href="#services" class="nav__mobile-link" style="--i: 2">Services</a>
-    <a href="#contact" class="nav__mobile-link" style="--i: 3">Contact</a>
+    <a href="/" class="nav__mobile-link" style="--i: 0">Home</a>
+    <a href="/about" class="nav__mobile-link" style="--i: 1">About</a>
+    <a href="/#services" class="nav__mobile-link" style="--i: 2">Services</a>
+    <a href="/#contact" class="nav__mobile-link" style="--i: 3">Contact</a>
     <a
-      href="#contact"
+      href="/#contact"
       class="btn-gold nav__mobile-quote"
       style="--i: 4"
       data-quote
@@ -64,7 +65,6 @@
       Get a Quote
     </a>
   </nav>
-  <p class="nav__mobile-foot">Head Office · Accra</p>
 </aside>
 
 <style>
@@ -241,7 +241,7 @@
     color: var(--fg);
     font-size: clamp(1.7rem, 7vw, 2.1rem);
     font-weight: 300;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.025rem;
     text-decoration: none;
     padding-block: 0.5rem;
     opacity: 0;
@@ -269,13 +269,6 @@
     transition: opacity 0.4s ease, transform 0.5s var(--ease-out),
       background 0.25s ease;
     transition-delay: calc(0.08s * var(--i) + 0.12s);
-  }
-
-  .nav__mobile-foot {
-    font-size: 0.72rem;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--faint);
   }
 
   @media (min-width: 860px) {

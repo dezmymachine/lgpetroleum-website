@@ -4,10 +4,10 @@
  * containing only links that exist on this one-pager.
  */
 const navigate = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Contact', href: '/#contact' },
 ];
 ---
 
@@ -31,6 +31,20 @@ const navigate = [
       <a class="contact__mail" href="mailto:info@lgpetroleum.africa">
         info@lgpetroleum.africa
       </a>
+      <div class="contact__lines">
+        <a class="contact__mail" href="tel:+233245770319" aria-label="Call +233 24 577 0319">
+          +233 24 577 0319
+        </a>
+        <a
+          class="contact__mail"
+          href="https://wa.me/233245770319"
+          target="_blank"
+          rel="noopener"
+          aria-label="Chat on WhatsApp with +233 24 577 0319"
+        >
+          WhatsApp
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -63,14 +77,33 @@ const navigate = [
         <p>
           <a href="mailto:info@lgpetroleum.africa">info@lgpetroleum.africa</a>
         </p>
+        <p>
+          <a href="tel:+233245770319" aria-label="Call +233 24 577 0319">+233 24 577 0319</a>
+        </p>
+        <p>
+          <a
+            href="https://wa.me/233245770319"
+            target="_blank"
+            rel="noopener"
+            aria-label="Chat on WhatsApp with +233 24 577 0319"
+          >WhatsApp</a>
+        </p>
       </address>
       <a href="#contact" class="site-footer__quote" data-quote>Get a Quote</a>
     </div>
   </div>
 
+  <p class="container site-footer__credits">
+    Photo credits: W.carter, Carl Young and Grendelkhan
+    (<a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener">CC BY-SA 4.0</a>),
+    Frans Berkelaar
+    (<a href="https://creativecommons.org/licenses/by/2.0/" rel="noopener">CC BY 2.0</a>),
+    via <a href="https://commons.wikimedia.org/" rel="noopener">Wikimedia Commons</a>.
+  </p>
+
   <div class="container site-footer__base">
     <p>© <span data-year>2026</span> Liberty Global Petroleum</p>
-    <a href="#home" class="to-top" aria-label="Back to top">
+    <a href="#top" class="to-top" aria-label="Back to top">
       <svg viewBox="0 0 12 14" fill="none" aria-hidden="true">
         <path d="M6 13V1M1.5 5.5 6 1l4.5 4.5" stroke="currentColor" stroke-width="1.6" />
       </svg>
@@ -98,7 +131,7 @@ const navigate = [
   .contact__title {
     font-size: clamp(1.7rem, 4vw, 2.6rem);
     font-weight: 600;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.025rem;
     line-height: 1.12;
     text-wrap: balance;
   }
@@ -114,6 +147,13 @@ const navigate = [
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
+  }
+
+  .contact__lines {
+    display: flex;
+    flex-direction: column;
+    align-items: inherit;
+    gap: 0.8rem;
   }
 
   .contact__mail {
@@ -145,7 +185,7 @@ const navigate = [
   .site-footer__headline {
     font-size: clamp(2rem, 4.6vw, 3.4rem);
     font-weight: 300;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.025rem;
     line-height: 1.12;
     text-wrap: balance;
     max-width: 14ch;
@@ -162,7 +202,7 @@ const navigate = [
   .site-footer__col h3 {
     font-size: 0.7rem;
     font-weight: 500;
-    letter-spacing: 0.3em;
+    letter-spacing: -0.025rem;
     text-transform: uppercase;
     color: var(--faint);
     margin-bottom: 1.4rem;
@@ -201,7 +241,7 @@ const navigate = [
     margin-top: 1.2rem;
     font-size: 0.78rem;
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: -0.025rem;
     text-transform: uppercase;
     color: var(--gold) !important;
     border-bottom: 1px solid rgba(239, 191, 4, 0.4);
@@ -213,6 +253,18 @@ const navigate = [
     border-color: var(--gold);
   }
 
+  .site-footer__credits {
+    padding-bottom: 1.25rem;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.38);
+  }
+
+  .site-footer__credits a {
+    color: inherit;
+    text-underline-offset: 2px;
+  }
+
   .site-footer__base {
     display: flex;
     justify-content: space-between;
@@ -222,7 +274,7 @@ const navigate = [
     padding-block: 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     font-size: 0.72rem;
-    letter-spacing: 0.22em;
+    letter-spacing: -0.025rem;
     text-transform: uppercase;
     color: var(--faint);
   }
@@ -275,5 +327,6 @@ const navigate = [
       align-items: flex-end;
       text-align: right;
     }
+
   }
 </style>
